@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISHA - Ichha Sahayta Hito Anukool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0 6rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 3rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                display: none;
+                padding: 1rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile menu toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #2c3e50;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ISHA</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+                <li><a href="#" onclick="showPage('programs')">Programs</a></li>
+                <li><a href="#" onclick="showPage('impact')">Impact</a></li>
+                <li><a href="#" onclick="showPage('volunteer')">Volunteer</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>ISHA</h1>
+                    <p class="subtitle">Ichha Sahayta Hito Anukool</p>
+                    <p>Empowering communities through compassionate action. We provide hope, education, and essential resources to those who need them most.</p>
+                    <a href="#" onclick="showPage('programs')" class="cta-button">Explore Our Programs</a>
+                </div>
+            </section>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon">🏠</div>
+                    <h3>Homeless Support</h3>
+                    <p>Providing shelter, food, and rehabilitation programs to help homeless individuals rebuild their lives with dignity and hope.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Education Access</h3>
+                    <p>Breaking barriers to education by providing resources, tutoring, and support to underprivileged children and adults.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💻</div>
+                    <h3>Digital Inclusion</h3>
+                    <p>Bridging the digital divide by providing tablets, internet access, and digital literacy training to underserved communities.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🩺</div>
+                    <h3>Women's Health</h3>
+                    <p>Supporting women's health and dignity through menstrual hygiene programs, health education, and essential supplies.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="about" class="page">
+        <main>
+            <section class="section">
+                <h2>About ISHA</h2>
+                <p>ISHA - Ichha Sahayta Hito Anukool represents our unwavering commitment to creating positive change in our communities. Founded on the principles of compassion, dignity, and empowerment, we work tirelessly to address the most pressing social challenges of our time.</p>
+                
+                <p>Our mission is rooted in the belief that every individual deserves access to basic necessities, education, and opportunities for growth. Through our comprehensive programs, we aim to break the cycles of poverty, homelessness, and inequality that affect millions of lives.</p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">Lives Impacted</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">25</div>
+                        <div class="stat-label">Active Programs</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Volunteers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Cities Served</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- PROGRAMS PAGE -->
+    <div id="programs" class="page">
+        <main>
+            <section class="section">
+                <h2>Our Programs</h2>
+                <p>Comprehensive initiatives designed to create lasting change in communities across multiple sectors.</p>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon">🏠</div>
+                        <h3>Homeless Rehabilitation</h3>
+                        <p>Our homeless support program provides immediate shelter, nutritious meals, medical care, and long-term rehabilitation services. We work with local shelters and create temporary housing solutions while helping individuals develop job skills and secure permanent housing.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">👶</div>
+                        <h3>Child Welfare & Education</h3>
+                        <p>Focused on breaking the cycle of poverty through education, we provide school supplies, uniforms, tutoring services, and after-school programs. Our child welfare initiatives ensure proper nutrition, healthcare, and protection for vulnerable children.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💻</div>
+                        <h3>Digital Literacy Initiative</h3>
+                        <p>Providing tablets, smartphones, and internet access to underprivileged families. Our program includes digital skills training, online education resources, and tech support to help bridge the digital divide in underserved communities.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🩺</div>
+                        <h3>Women's Health & Hygiene</h3>
+                        <p>Distribution of menstrual hygiene products, health education workshops, and reproductive health services. We work to eliminate period poverty and ensure women have access to essential health resources and information.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📰</div>
+                        <h3>Community Journalism</h3>
+                        <p>Supporting local journalists and media initiatives to ensure important community stories are told. We provide training, equipment, and platforms for citizen journalism, promoting transparency and community engagement.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌱</div>
+                        <h3>Sustainable Development</h3>
+                        <p>Environmental awareness programs, sustainable livelihood training, and community garden projects. We focus on creating long-term solutions that benefit both people and the planet.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- IMPACT PAGE -->
+    <div id="impact" class="page">
+        <main>
+            <section class="section">
+                <h2>Our Impact</h2>
+                <p>Measuring success through the lives we've touched and the communities we've transformed.</p>
+
+                <div class="cards">
+                    <div class="card">
+                        <h3>Education Transformation</h3>
+                        <p>Over 15,000 children now have access to quality education through our programs. We've established 50 learning centers and provided digital devices to 8,000 students, significantly improving literacy rates in target communities.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Homeless Rehabilitation</h3>
+                        <p>Successfully helped 2,500+ individuals transition from homelessness to stable housing. Our job training programs have achieved an 85% employment rate among participants, breaking the cycle of homelessness.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Women's Health Initiative</h3>
+                        <p>Distributed over 100,000 menstrual hygiene kits and reached 25,000 women with health education programs. School dropout rates among girls in our target areas decreased by 40%.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Digital Inclusion</h3>
+                        <p>Provided 5,000 tablets and trained 12,000 individuals in digital literacy. Our programs have enabled 3,000+ people to access online education and job opportunities, bridging the digital divide.</p>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">₹2.5Cr</div>
+                        <div class="stat-label">Funds Utilized</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Direct Impact</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Volunteers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support Available</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- VOLUNTEER PAGE -->
+    <div id="volunteer" class="page">
+        <main>
+            <section class="section">
+                <h2>Join Our Mission</h2>
+                <p>Become part of a movement that's creating real change. Whether you have an hour a week or want to commit more time, there's a place for you in the ISHA family.</p>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon">🤝</div>
+                        <h3>Field Volunteer</h3>
+                        <p>Work directly with communities in need. Help with food distribution, teach in our education programs, assist with shelter operations, or support our health initiatives. Perfect for hands-on changemakers.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💼</div>
+                        <h3>Professional Services</h3>
+                        <p>Contribute your professional skills in areas like marketing, finance, legal support, or technology. Help us operate more efficiently and expand our reach through your expertise.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎓</div>
+                        <h3>Skill-based Teaching</h3>
+                        <p>Share your knowledge and skills through our education programs. Teach literacy, digital skills, vocational training, or provide mentorship to young people and adults seeking to improve their lives.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💝</div>
+                        <h3>Fundraising</h3>
+                        <p>Help us raise awareness and funds through events, social media campaigns, or community outreach. Use your network and creativity to support our mission and expand our impact.</p>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">Volunteer Application</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="volunteer-name">Full Name</label>
+                            <input type="text" id="volunteer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-email">Email Address</label>
+                            <input type="email" id="volunteer-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-phone">Phone Number</label>
+                            <input type="tel" id="volunteer-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-interest">Area of Interest</label>
+                            <textarea id="volunteer-interest" placeholder="Tell us about your skills, interests, and how you'd like to contribute..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="contact" class="page">
+        <main>
+            <section class="section">
+                <h2>Get in Touch</h2>
+                <p>We'd love to hear from you. Whether you want to support our cause, need our services, or have questions about our work, we're here to help.</p>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-icon">📍</div>
+                        <h3>Visit Us</h3>
+                        <p><strong>ISHA Headquarters</strong><br>
+                        123 Community Center Road<br>
+                        Social Sector, City - 400001<br>
+                        India</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📞</div>
+                        <h3>Call Us</h3>
+                        <p><strong>General Inquiries:</strong><br>
+                        +91 98765 43210<br><br>
+                        <strong>Emergency Support:</strong><br>
+                        +91 98765 43211 (24/7)</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">✉️</div>
+                        <h3>Email Us</h3>
+                        <p><strong>General:</strong><br>
+                        info@isha-ngo.org<br><br>
+                        <strong>Volunteers:</strong><br>
+                        volunteer@isha-ngo.org</p>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">Send us a Message</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="contact-name">Your Name</label>
+                            <input type="text" id="contact-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email Address</label>
+                            <input type="email" id="contact-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-subject">Subject</label>
+                            <input type="text" id="contact-subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="cta-button" style="width: 100%; border: none; cursor: pointer;">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <a href="#" onclick="showPage('about')">About</a>
+                <a href="#" onclick="showPage('programs')">Programs</a>
+                <a href="#" onclick="showPage('volunteer')">Volunteer</a>
+                <a href="#" onclick="showPage('contact')">Contact</a>
+            </div>
+            <p>&copy; 2025 ISHA - Ichha Sahayta Hito Anukool. All rights reserved.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #bdc3c7;">
+                Creating positive change, one life at a time.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate current nav link
+            const currentLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Handle form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! We will get back to you soon.');
+                    form.reset();
+                });
+            });
+        });
+        
+        // Add smooth scroll effect for navigation
+        document.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
